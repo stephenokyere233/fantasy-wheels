@@ -41,7 +41,7 @@ export const SPARE_PARTS = [
   {
     name: "break disk",
     price: "$380.99",
-    image: "/assets/Bettery.jpg",
+    image: "/assets/Break_disc.jpg",
     description: "High-quality break disk for efficient braking performance.",
   },
   {
