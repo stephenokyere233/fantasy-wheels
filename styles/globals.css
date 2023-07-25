@@ -27,12 +27,7 @@ html::-webkit-scrollbar-thumb {
     border-radius: 5rem;
     background: var(--text-color);
 }
-section{
-    padding: 4rem 0 4rem;
-}
-img {
-    width: 100%;
-}
+
 body {
     color: var(--text-color);
 }

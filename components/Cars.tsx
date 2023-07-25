@@ -2,10 +2,8 @@ import { CARS } from "@/constants";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useStore } from "@/store";
 
 const Cars = () => {
-  const setSelectedCarData = useStore((state) => state.setSelectedCarData);
   return (
     <section className="max-w-[90rem] mx-auto scroll-mt-[10em]" id="cars">
       <div className="text-center">
@@ -19,23 +17,21 @@ const Cars = () => {
       </div>
       <div className="grid lg:grid-cols-3 gap-10 md:grid-cols-2 my-10 md:px-10">
         {CARS.map((car) => {
-          const { brand, image,description } = car;
           return (
             <div
-              key={brand}
+              key={car.path}
               className="relative"
-              onClick={() => setSelectedCarData({ brand, image,description })}
             >
-              <Link href={`/cars/${brand}`}>
+              <Link href={`/cars/${car.path}`}>
                 <Image
-                  src={image}
+                  src={car.image}
                   alt="brand"
                   className="rounded-lg object-cover"
                   width={500}
                   height={500}
                 />
                 <p className="absolute bg-white bottom-4 left-4 px-4 p-2 rounded-lg">
-                  {brand}
+                  {car.brand}
                 </p>
               </Link>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Image from "next/image";
 import Header from "@/components/Header";
 import Cars from "@/components/Cars";
@@ -5,8 +6,42 @@ import Footer from "@/components/Footer";
 import Banner from "@/components/Footer/Banner";
 import SpareParts from "@/components/SpareParts";
 import Blog from "@/components/Blog";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { fetchItemsInDB } from "@/services/cart.service";
+import { firebaseAuth } from "@/config/firebase.config";
+import { useStore } from "@/store";
+import { CartItem } from "@/interaces";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const setCartItems = useStore((state) => state.setCartItems);
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  async function fetchItemsInCart() {
+    if (!firebaseAuth.currentUser) return;
+    setLoading(true);
+    await fetchItemsInDB()
+      .then((result) => {
+        console.log("fetch items result", result);
+        setCartItems(
+          result?.filter(
+            (result) => result.uid === firebaseAuth.currentUser?.uid
+          ) as CartItem[]
+        );
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    fetchItemsInCart();
+  }, [router,firebaseAuth.currentUser]);
+
+  if (loading) return <div>Loading...</div>;
   return (
     <>
       <Header />
@@ -34,9 +69,11 @@ export default function Home() {
               exciting world of cars.
             </p>
             <div>
-              <button className="bg-brand px-4 p-2 w-[200px] rounded-md">
-                Explore Now
-              </button>
+              <Link href="/explore">
+                <button className="bg-brand px-4 p-2 w-[200px] rounded-md">
+                  Explore Now
+                </button>
+              </Link>
             </div>
           </div>
           <div>

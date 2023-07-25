@@ -14,4 +14,25 @@ export const useStore = create<StoreState>((set) => ({
   selectedBlogData: null,
   setSelectedBlogData: (selectedBlogData) =>
     set(() => ({ selectedBlogData: selectedBlogData })),
+  cartItems: [],
+  setCartItems: (cartItems) => set(() => ({ cartItems: cartItems })),
+  addToCart: (item: any) =>
+    set((state) => {
+      const existingItemIndex = state.cartItems.findIndex(
+        (cartItem) => cartItem.id === item.id
+      );
+
+      if (existingItemIndex !== -1) {
+        const updatedCartItems = [...state.cartItems];
+        updatedCartItems[existingItemIndex].quantity = item.quantity;
+        console.log("updatedCartItems", updatedCartItems);
+        return { cartItems: updatedCartItems };
+      } else {
+        return { cartItems: [...state.cartItems, item] };
+      }
+    }),
+  removeFromCart: (itemId: number) =>
+    set((state) => ({
+      cartItems: state.cartItems.filter((cartItem) => cartItem.id !== itemId),
+    })),
 }));
