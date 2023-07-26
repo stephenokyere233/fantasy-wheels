@@ -65,14 +65,14 @@ const Header = () => {
           {cartItems && <p>{cartItems.length}</p>}
         </Link>
       )}
-      {authenticatedUser ? (
+      {firebaseAuth.currentUser?.uid ? (
         <div>
-          {authenticatedUser.photoURL ? (
+          {firebaseAuth.currentUser?.photoURL ? (
             <div className="flex items-center gap-2">
               <Image
                 alt=""
                 className="w-[50px] h-[50px] rounded-full"
-                src={authenticatedUser.photoURL}
+                src={firebaseAuth.currentUser?.photoURL}
                 width={100}
                 height={100}
               />

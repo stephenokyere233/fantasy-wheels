@@ -76,7 +76,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div>
+          <div className="lg:w-[50%]">
             <Image
               src="/assets/Benz.png"
               width={1500}
