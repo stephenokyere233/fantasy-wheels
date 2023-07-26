@@ -7,24 +7,31 @@ const Checkout: FC<{ cart: { price: string; quantity: number }[] }> = ({
   cart,
 }) => {
   const redirectToCheckout = async () => {
-    const toastID=toast.loading("Redirecting to Checkout...")
+    const toastID = toast.loading("Redirecting to Checkout...");
     try {
       const {
         data: { id },
-      } = await axios.post("/api/checkout_session", {
-        items: cart,
-      });
+      } = await axios.post(
+        "/api/checkout_session",
+        {
+          items: cart,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`,
+          },
+        }
+      );
 
       const stripe = await getStripe();
       const result = await stripe.redirectToCheckout({
         sessionId: id,
       });
-      toast.dismiss(toastID)
+      toast.dismiss(toastID);
       if (result?.error) toast.error(result?.error.message as string);
     } catch (error) {
       console.log(error);
       toast.dismiss(toastID);
-
     }
   };
   return (
