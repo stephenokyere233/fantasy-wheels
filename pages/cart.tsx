@@ -6,8 +6,12 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import CartItemCard from "@/components/CartItem";
 import { CartItem } from "@/interaces";
-import { firebaseAuth } from "@/config/firebase.config";
-import { fetchItemsInDB } from "@/services/cart.service";
+import { firebaseAuth, firestoreDB } from "@/config/firebase.config";
+import { fetchItemsInDB, removeFromCartInDB } from "@/services/cart.service";
+import Checkout from "@/components/Checkout";
+import { BiTrashAlt } from "react-icons/bi";
+import { doc } from "firebase/firestore";
+import toast from "react-hot-toast";
 
 const Null = () => {
   return (
@@ -28,6 +32,33 @@ const Cart = () => {
   const setCartItems = useStore((state) => state.setCartItems);
   const cartItems = useStore((state) => state.cartItems);
   const [loading, setLoading] = useState<boolean>(false);
+  const clearCart = useStore((state) => state.clearCart);
+
+  const resetCart = (array: CartItem[]) => {
+    let newCart = [];
+    for (let i = 0; i < array.length; i++) {
+      newCart.push({
+        price: array[i].api_id,
+        quantity: array[i].quantity,
+      });
+    }
+    return newCart;
+  };
+
+
+  const clearItemsInCart = () => {
+    const toastId = toast.loading("Clearing cart...");
+    cartItems.forEach(async (item) => {
+      let docRef = doc(
+        firestoreDB,
+        `users/${firebaseAuth.currentUser?.uid}/cart/${item.id}`
+      );
+      await removeFromCartInDB(docRef);
+    });
+    toast.dismiss(toastId);
+    toast.success("Cart Cleared");
+    clearCart();
+  };
 
   async function fetchItemsInCart() {
     if (!firebaseAuth.currentUser) return;
@@ -73,9 +104,20 @@ const Cart = () => {
     <>
       <Header />
       <div className="min-h-[70vh] mx-auto max-w-[90rem] p-6">
-        <h2 className="mx-auto text-2xl text-center uppercase mb-4">
-          Cart items
-        </h2>
+        <div className="mx-auto mb-4 flex  justify-between">
+          <h2 className="text-2xl font-bold text-center uppercase">
+            Cart items
+          </h2>
+          {cartItems.length > 0 && (
+            <span
+              onClick={clearItemsInCart}
+              className="flex bg-red-400 p-2 cursor-pointer px-4 items-center rounded-md"
+            >
+              <p>Clear Cart</p>
+              <BiTrashAlt size={28} />
+            </span>
+          )}
+        </div>
         <div>
           {loading ? (
             <div>Loading...</div>
@@ -103,7 +145,7 @@ const Cart = () => {
                   <b>Total Unit Items:</b>
                   <p>{totalItems(cartItems)}</p>
                 </div>
-                <button className="bg-brand px-4 py-2 rounded-md">Checkout</button>
+                <Checkout cart={resetCart(cartItems)} />
               </section>
             </>
           ) : (

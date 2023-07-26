@@ -2,6 +2,7 @@ export const CARS = [
   {
     id: 100,
     path: "bmw",
+    api_id: "price_1NYA49GKbslVoy6LtHgjTjqj",
     name: "BMW",
     price: 500,
     brand: "BMW",
@@ -13,6 +14,7 @@ export const CARS = [
     id: 200,
     path: "ferrari",
     name: "Ferrari",
+    api_id: "price_1NYA6oGKbslVoy6LggESIxlO",
     price: 1500,
     brand: "Ferrari",
     image: "/assets/Ferrari.jpg",
@@ -24,6 +26,7 @@ export const CARS = [
     name: "Ford",
     path: "ford",
     price: 15200,
+    api_id: "price_1NYA8vGKbslVoy6L6gTAzZsB",
     brand: "Ford",
     image: "/assets/Ford.jpg",
     description:
@@ -33,6 +36,7 @@ export const CARS = [
     id: 400,
     path: "rolls_royce",
     name: "Rolls Royce",
+    api_id: "price_1NYAB3GKbslVoy6Lo5sCTGxS",
     price: 59000,
     brand: "RollsRoyce",
     image: "/assets/RR.jpg",
@@ -41,7 +45,8 @@ export const CARS = [
   },
   {
     id: 500,
-    path:"masseratti",
+    path: "masseratti",
+    api_id: "price_1NYACqGKbslVoy6LIRvZAtgE",
     name: "Masseratti",
     price: 50000,
     brand: "Masseratti",
@@ -51,8 +56,9 @@ export const CARS = [
   },
   {
     id: 600,
-    path:"hell_cat",
+    path: "hell_cat",
     name: "Hell Cat",
+    api_id: "price_1NYAEuGKbslVoy6LXHBkaxot",
     price: 81000,
     brand: "HellCat",
     image: "/assets/Hellcat.jpg",

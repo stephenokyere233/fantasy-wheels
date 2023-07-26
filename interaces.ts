@@ -20,6 +20,7 @@ export interface StoreAction {
   setCartItems: (cartItems: StoreState["cartItems"]) => void;
   addToCart: any;
   removeFromCart: any;
+  clearCart:any
 }
 
 export interface User {
@@ -33,6 +34,7 @@ export interface User {
 export interface CartItem {
   brand: string;
   description: string;
+  api_id:string;
   id: number;
   image: string;
   name: string;

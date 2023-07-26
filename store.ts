@@ -35,4 +35,5 @@ export const useStore = create<StoreState>((set) => ({
     set((state) => ({
       cartItems: state.cartItems.filter((cartItem) => cartItem.id !== itemId),
     })),
+  clearCart: () => set(() => ({ cartItems: [] })),
 }));
