@@ -50,7 +50,7 @@ const Success = () => {
     if (session_id !== undefined) {
       fetcher();
     }
-  }, [session_id]);
+  }, [session_id,router]);
 
   return (
     <div className="flex flex-col h-screen">
