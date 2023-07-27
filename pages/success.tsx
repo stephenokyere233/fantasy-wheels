@@ -4,10 +4,7 @@ import Header from "@/components/Header";
 import { firestoreDB, firebaseAuth } from "@/config/firebase.config";
 import useClearCollection from "@/hooks/useClearCollection";
 import axios from "axios";
-import {
-  CollectionReference,
-  collectionGroup,
-} from "firebase/firestore";
+import { CollectionReference, collectionGroup } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
@@ -21,7 +18,6 @@ const Success = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-
   const { clearItems } = useClearCollection();
 
   const clearItemsInCart = () => {
@@ -30,13 +26,17 @@ const Success = () => {
     clearItems(cartRef as CollectionReference, firebaseAuth.currentUser.uid);
   };
 
+  useEffect(() => {
+    clearItemsInCart();
+  }, []);
+
   async function fetcher() {
     setLoading(true);
     try {
       const result = await axios.post(`/api/checkout_session/${session_id}`);
       clearItemsInCart();
       setData(result.data);
-      console.log(result.data)
+      console.log(result.data);
       setError(false);
       setLoading(false);
     } catch (error) {
@@ -50,7 +50,7 @@ const Success = () => {
     if (session_id !== undefined) {
       fetcher();
     }
-  }, [session_id,router]);
+  }, [session_id, router]);
 
   return (
     <div className="flex flex-col h-screen">
