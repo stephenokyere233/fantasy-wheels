@@ -3,9 +3,10 @@ import { FC } from "react";
 import toast from "react-hot-toast";
 import getStripe from "@/lib/get-stripe";
 
-const Checkout: FC<{ cart: { price: string; quantity: number }[] }> = ({
-  cart,
-}) => {
+const Checkout: FC<{
+  cart: { price: string; quantity: number }[];
+  title?: string;
+}> = ({ cart, title = "Checkout" }) => {
   const redirectToCheckout = async () => {
     const toastID = toast.loading("Redirecting to Checkout...");
     try {
@@ -39,7 +40,7 @@ const Checkout: FC<{ cart: { price: string; quantity: number }[] }> = ({
       onClick={redirectToCheckout}
       className="bg-brand px-4 py-2 rounded-md"
     >
-      Checkout
+      {title}
     </button>
   );
 };

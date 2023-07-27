@@ -7,11 +7,11 @@ import Image from "next/image";
 import CartItemCard from "@/components/CartItem";
 import { CartItem } from "@/interaces";
 import { firebaseAuth, firestoreDB } from "@/config/firebase.config";
-import { fetchItemsInDB, removeFromCartInDB } from "@/services/cart.service";
+import { fetchItemsInDB} from "@/services/cart.service";
 import Checkout from "@/components/Checkout";
 import { BiTrashAlt } from "react-icons/bi";
-import { doc } from "firebase/firestore";
-import toast from "react-hot-toast";
+import { CollectionReference, collectionGroup} from "firebase/firestore";
+import useClearCollection from "@/hooks/useClearCollection";
 
 const Null = () => {
   return (
@@ -32,7 +32,7 @@ const Cart = () => {
   const setCartItems = useStore((state) => state.setCartItems);
   const cartItems = useStore((state) => state.cartItems);
   const [loading, setLoading] = useState<boolean>(false);
-  const clearCart = useStore((state) => state.clearCart);
+  const { clearItems } = useClearCollection();
 
   const resetCart = (array: CartItem[]) => {
     let newCart = [];
@@ -47,17 +47,9 @@ const Cart = () => {
 
 
   const clearItemsInCart = () => {
-    const toastId = toast.loading("Clearing cart...");
-    cartItems.forEach(async (item) => {
-      let docRef = doc(
-        firestoreDB,
-        `users/${firebaseAuth.currentUser?.uid}/cart/${item.id}`
-      );
-      await removeFromCartInDB(docRef);
-    });
-    toast.dismiss(toastId);
-    toast.success("Cart Cleared");
-    clearCart();
+    if (!firebaseAuth.currentUser) return;
+    const cartRef = collectionGroup(firestoreDB, "cart");
+    clearItems(cartRef as CollectionReference, firebaseAuth.currentUser.uid);
   };
 
   async function fetchItemsInCart() {

@@ -132,9 +132,8 @@ const SparePartsPage = () => {
             </div>
           </section>
           <div className="flex gap-4 my-2">
-            <button className="bg-brand px-4 p-3 rounded-md">Buy Now</button>
             <button
-              className="bg-[#2221] px-4 p-3 rounded-md"
+              className="bg-brand px-10 p-3 rounded-md"
               onClick={() => addItemToCart({ ...selectedPartData, quantity })}
             >
               Add Cart
